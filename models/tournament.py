@@ -1,7 +1,7 @@
 class Tournament:
     """Classe qui instancie un tournoi et crée un dictionaire
     """
-    def __init__(self, title, location, date, game_mode, description, nb_of_rounds=4):
+    def __init__(self, title, location, date, game_mode, description, nb_of_rounds):
         self.title = title
         self.location = location
         self.date = date                                           # Voir library datetime pour format
@@ -10,6 +10,9 @@ class Tournament:
         self.description = description
         self.rounds = []
         self.players = []
+        self.player_score = []
+        
+
 
     def serialize(self):
         serialized_tournament = {
@@ -20,14 +23,7 @@ class Tournament:
             "Description": self.description,
             "Nombre de manches": self.nb_of_rounds,
             "Joueurs" : self.players,
-            "Manches": self.rounds
+            "Player_Score": self.player_score,
+            "Manches": self.rounds,
         }
         return serialized_tournament
-
-    def add_player(self, player):
-        """ Ajoute un joueur au tournoi"""
-        self.players.append(player)
-
-    def add_round(self, round):
-        """ Ajoute une manche au tournoi"""
-        self.rounds.append(round)
