@@ -12,13 +12,7 @@ import views.v_add_player as vp
 import views.v_round as vr
 import views.v_tournament as vt
 
-
-#Voir variable nombre de rounds + ajuster le numero du round automatiquement
-#Afficher joueurs des matchs avant de lancer les rounds + mettre à la fin le enditme + rendre heure de debut et de fin automatique
-#factoriser fonctions sorting + finir de créer les rapports
-#Créer variables explicit au lieu des chiffres magiques
-#Fix inserting rounds data in create_round
-
+#factoriser fonctions sorting + finir de créer les ---rapports
 
 
 def display_main_menu():
@@ -37,12 +31,12 @@ def display_player_menu():
     if action == 1: 
         cp.register_player()
         print("Joueur(s) ajouté(s)")
-        input("Appuyer sur une touche pour revenir en arrière")
+        input("> Appuyer sur une touche pour revenir en arrière")
         display_player_menu()
     if action == 2: 
         print("Afficher les rapports de joueurs") 
         display_players_report_menu()
-        input("Appuyer sur une touche pour revenir en arrière")
+        input("> Appuyer sur une touche pour revenir en arrière")
         display_player_menu()            
     if action == 3: 
         display_main_menu()
@@ -57,22 +51,18 @@ def display_tournament_menu():
         display_tournament_menu()
     if action == 2: 
         ct.show_tourneys()
-        tournoi = input("Saisir le nom du tournoi \n")
+        tournoi = input("> Saisir le nom du tournoi \n")
         print("Début du tournoi \n")
-        rounds = int(input("Combien de rounds voulez-vous jouer? \n "))
-        for round in range(rounds):
-            cr.start_round(tournoi)
+        cr.round_check(tournoi)
         display_tournament_menu()
     if action == 3: 
         ct.show_tourneys()
-        tournoi = input("Choisir un tournoi \n")
-        rounds = int(input("Combien de rounds voulez-vous jouer? \n "))
-        for round in range (rounds):
-            cr.start_round(tournoi)
+        tournoi = input("> Choisir un tournoi \n")
+        cr.round_check(tournoi)
         display_tournament_menu()
     if action == 4: 
         print("Afficher les rapports de tournoi")
-        display_tournaments_report_menu()                    #Creer des rapports
+        display_tournaments_report_menu()                   
     if action == 5:
         display_main_menu()
         
@@ -80,12 +70,14 @@ def display_players_report_menu():
     pprint(Menus.players_report_menu)
     action = int(input("\n"))
     if action == 1:
+        print('Liste de tous les joueurs par ordre alphabétique : \n')
         crp.sorted_players_names()
-        input("Appuyer sur une touche pour revenir en arrière")
+        input("> Appuyer sur une touche pour revenir en arrière")
         display_players_report_menu()
     if action == 2: 
+        print('Liste de tous les acteurs par classement: \n')
         crp.sorted_players_rankings()
-        input("Appuyer sur une touche pour revenir en arrière")
+        input("> Appuyer sur une touche pour revenir en arrière")
         display_players_report_menu()
     if action == 3:
         display_main_menu()
@@ -95,7 +87,7 @@ def display_tournaments_report_menu():
     action = int(input("\n"))
     if action == 1:
         crp.show_all_tourneys()
-        input("Appuyer sur une touche pour revenir en arrière")
+        input("> Appuyer sur une touche pour revenir en arrière")
         display_tournaments_report_menu()
     if action == 2:
         display_tournaments_report_menu_2()
@@ -105,33 +97,33 @@ def display_tournaments_report_menu():
 
 def display_tournaments_report_menu_2():
     ct.show_tourneys()
-    tournoi = input("Veuillez saisir le nom d'un tournoi")
+    tournoi = input("> Veuillez saisir le nom d'un tournoi \n")
     pprint(Menus.tournaments_report_menu_2)
     action = int(input("\n"))
     if action == 1:
         pprint(Menus.players_report_menu)
-        action_1 = int(input("\n"))
-        if action_1 ==1:
+        choice = int(input("\n"))
+        if choice == 1:
             print(f"Classement des joueurs par odre alphabétique dans {tournoi} ")
-            #fonction 
-            input("Appuyer sur une touche pour revenir en arrière \n")
+            crp.players_in_tn_by_names(tournoi)
+            input("> Appuyer sur une touche pour revenir en arrière \n")
             display_tournaments_report_menu()
-        if action_1 == 2:  
+        if choice == 2:  
             print(f"Classement des joueurs par classement dans {tournoi} ")
-            #fonction 
-            input("Appuyer sur une touche pour revenir en arrière \n")
+            crp.players_in_tn_by_rankings(tournoi)
+            input(" > Appuyer sur une touche pour revenir en arrière \n")
             display_tournaments_report_menu()  
-        if action_1 ==3:
+        if choice == 3:
             display_tournaments_report_menu()
     if action == 2:
-        print("Afficher les tours")
-        #fonction
-        input("Appuyer sur une touche pour revenir en arrière \n")
+        print("Afficher les Manches")
+        crp.show_all_rounds(tournoi)
+        input("> Appuyer sur une touche pour revenir en arrière \n")
         display_tournaments_report_menu()  
     if action == 3:
         print("Afficher les matchs")
         #fonction
-        input("Appuyer sur une touche pour revenir en arrière \n")
+        input("> Appuyer sur une touche pour revenir en arrière \n")
         display_tournaments_report_menu() 
     if action == 4: 
         display_tournament_menu()
