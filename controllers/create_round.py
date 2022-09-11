@@ -8,8 +8,6 @@ import views.v_add_player as vp
 import views.v_round as vr
 import views.v_tournament as vt
 
-tournoi = "Madrid"
-
 def takeFirst(elem):
     return elem[0]
 
