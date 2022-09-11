@@ -8,9 +8,7 @@ class Player:
         self.birthdate = data["Date de naissance"]
         self.gender = data["Genre"]
         self.elo = int(data["Classement"])
-        #self.score = int(data["Score"])
-
-
+       
     def serialize(self):
         serialized_player = {
             "Nom": self.name,
@@ -21,5 +19,3 @@ class Player:
         }
         return serialized_player
 
-
-#playerModels = [Player(x) for x in players]

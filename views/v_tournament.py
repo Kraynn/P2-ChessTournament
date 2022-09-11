@@ -1,3 +1,5 @@
+import datetime
+
 def get_tournament_title():
     tournament_title = input("Veuillez écrire le nom du tournoi : ")
     return tournament_title
@@ -7,8 +9,8 @@ def get_tournament_location():
     return tournament_location
 
 def get_tournament_date():
-    tournament_date = input("Veuillez saisir la date du tournoi : ")
-    return tournament_date
+    tournament_date = datetime.date.today()
+    return tournament_date.strftime("%d/%m/%y")
     
 def get_tournament_game_mode():
     tournament_gamemode = input("Veuillez saisir le mode de jeu du tournoi : ")
