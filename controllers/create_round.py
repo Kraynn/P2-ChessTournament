@@ -1,3 +1,4 @@
+from ast import Pass
 from tinydb import TinyDB, Query
 from models.tournament import Tournament
 from models.match import Match
@@ -7,30 +8,63 @@ import views.v_add_player as vp
 import views.v_round as vr
 import views.v_tournament as vt
 
+tournoi = "Madrid"
+
 def takeFirst(elem):
     return elem[0]
 
 def takeSecond(elem):
     return elem[1]
 
-def start_round(tournoi):
+def round_check(tournoi):
+    db = TinyDB("db.json")
+    players_table = db.table("Joueurs")
+    tn_table = db.table("Tournois")
+    User=Query()
+    previous_round = tn_table.get(User.Titre == f"{tournoi}")["Manches"]
+    nb_of_rounds = tn_table.get(User.Titre == f"{tournoi}")["Nombre de manches"]
+    #winner = tn_table.get(User.Titre == f"{tournoi}")["Player_Score"][0]Le gagnant est {winner[0]} !                           bug si inexistant quand tn start if ensemble vide? else
+    tn_end = (f"Le tournoi est terminé ! \n >  \n > Appuyez sur une touche pour revenir au menu précédent. \n ")
+    if len(previous_round) == int(nb_of_rounds):
+        input(tn_end)
+    else:
+        start_round(tournoi, previous_round)
+        round_updated = tn_table.get(User.Titre == f"{tournoi}")["Manches"]
+        if len(round_updated) == int(nb_of_rounds):
+            input(tn_end)
+        else:
+            question = input("Voulez-vous jouer un autre round? (O/N) \n")
+            if question == "O": 
+                round_check(tournoi)
+            elif question == "o":
+                round_check(tournoi)
+            else:
+                pass
+ 
+def start_round(tournoi, previous_round):
     db = TinyDB("db.json")
     User = Query()
     tn_table = db.table("Tournois")
-    # current_tournament = tn_table.search(User.Titre == "f{tournoi}")
     tournoi = tournoi
-    round_number = vr.get_round_number()
+    rounds = []
+    round_number = len(previous_round)+1
     round_date = vr.get_round_date()
-    round_start = vr.get_round_start()
-    round_end = vr.get_round_end()                                                    # a voir si on crée pas une fonction apart pour cloturer le round
+    round_start = vr.get_round_start()                                                    
     if tn_table.search(User.Titre==f"{tournoi}")[0]["Player_Score"] == []:
         matches = first_round_matches(tournoi)
     else:
         matches = next_round_matches(tournoi)
-    round = Round(round_number, round_date, round_start, round_end, matches)
-    serialized_round = round.serialize()
-    tn_table.upsert({"Manches": serialized_round}, User.Titre ==f"{tournoi}")              #Bug pour ajouter multiple round meme si le score s'update bien
-
+        round_end = vr.get_round_end() 
+        round = Round(round_number, round_date, round_start, round_end, matches)
+        serialized_round = round.serialize()
+        if tn_table.get(User.Titre == f"{tournoi}")["Manches"] == []:
+            rounds.append(serialized_round)
+        else:
+            for i in range(len(previous_round)):
+                rounds.append(previous_round[i])
+            rounds.append(serialized_round)
+        tn_table.upsert({"Manches": rounds}, User.Titre ==f"{tournoi}")   
+         
 def get_match_score(player_1,player_2):
     score = input(f"Si {player_1} a gagné : tapez 1 \n Si {player_2} a gagné : tapez 2 \n  Si match nul : tapez 3")
     if score == "1":
@@ -45,6 +79,8 @@ def first_round_matches(tournoi):
     players_table = db.table("Joueurs")
     tn_table = db.table("Tournois")
     User=Query()
+    player_score = []
+    serialized_matches = [] 
 
     for player in players_table:
         x = tn_table.search(User.Titre == f"{tournoi}")[0]              
@@ -52,9 +88,10 @@ def first_round_matches(tournoi):
     players = [x for x in players_table if x.doc_id in y]
     playerModels = [Player(x) for x in players]
     playerModels.sort(key=lambda k: k.elo)
-    
-    player_score = []
-    serialized_matches = []        
+    for i in range(4):
+        print(f"{playerModels[i].name} vs. {playerModels[4+i].name} \n")
+    input("> Appuyez sur une touche pour commencer les matchs \n")
+
     for i in range(4):
         result_1, result_2 = get_match_score(playerModels[i].name, playerModels[4+i].name)
         match = Match(playerModels[i].name, result_1, playerModels[4+i].name, result_2)
@@ -75,12 +112,18 @@ def next_round_matches(tournoi):
     
     player_score = tn_table.search(User.Titre==f"{tournoi}")[0]["Player_Score"]
     player_score_updated = []
+    players_list= []
     players = []
     score = []
-    serialized_matches = []                    
+    serialized_matches = []   
     for i in range(8):
         players.append(takeFirst(player_score[0+i]))
+        players_list.append(takeFirst(player_score[0+i]))
         score.append(takeSecond(player_score[0+i]))
+    for i in range(4):
+        print(f"{players_list[i]} vs. {players_list[i+1]} \n")
+        players_list.pop(0)                                                      
+    input("> Appuyez sur une touche pour commencer les matchs \n")
     for i in range(4):
         result_1, result_2 = get_match_score(players[i], players[i+1])
         match = Match(players[i], result_1, players[1], result_2)
@@ -95,3 +138,4 @@ def next_round_matches(tournoi):
     player_score_updated.sort(key=takeSecond,  reverse=True)
     tn_table.update({"Player_Score": player_score_updated}, User.Titre==f"{tournoi}") 
     return serialized_matches 
+
