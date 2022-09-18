@@ -1,6 +1,5 @@
 class Menus:
-    
-    main_menu_header = ["Swiss Chess Creator ", 
+    main_menu_header = ["Swiss Chess Creator ",
                         "********************",
                         "********************",
                         "---Menu principal-- ",
@@ -41,5 +40,3 @@ class Menus:
                                  ("[4] Retour aux tournois"),
                                  ("[5] Retour au menu précédant")
                                  ]
-
-

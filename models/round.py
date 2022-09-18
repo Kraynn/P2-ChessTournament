@@ -1,9 +1,4 @@
-from models.match import Match
-
 class Round:
-    """ Classe qui instancie une manche et crée un dictionnaire
-    """
-
     def __init__(self, number, date, start, end, matchs):
         self.number = number
         self.date = date
@@ -20,5 +15,3 @@ class Round:
             "Matchs": self.matchs
         }
         return serialized_round
-
-        
