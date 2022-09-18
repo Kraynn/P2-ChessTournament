@@ -49,7 +49,7 @@ Excuter la commande suivante pour lancer le programme:
 
 Executer la commande suivantte pour générer le rapport:
 >
-> flake8 --filename=*.py --format=html --htmldir=flake-report --exclude test\lib --ignore=E501
+> flake8 --filename=*.py --format=html --htmldir=flake-report --exclude chess_env\lib --ignore=E501
 
 *(Nous choisissons d'ignorer l'erreur 501 relatif à la longueur d'une ligne du fait de la nature de certaines variables que  l'on ne peut déclarer autrement)*
 
