@@ -6,6 +6,9 @@ import controllers.create_tournament as ct
 import controllers.create_report as crp
 
 
+back = " > Appuyez sur une touche pour revenir en arrière \n "
+
+
 def display_main_menu():
     pprint(Menus.main_menu)
     action = int(input("\n"))
@@ -22,13 +25,17 @@ def display_player_menu():
     action = int(input("\n"))
     if action == 1:
         cp.register_player()
-        print("Joueur(s) ajouté(s)")
-        input("> Appuyer sur une touche pour revenir en arrière")
+        print("Joueur(s) ajouté(s) \n ")
+        input(back)
         display_player_menu()
     if action == 2:
-        print("Afficher les rapports de joueurs")
+        cp.update_ranking()
+        print("Classement mis à jour \n ")
+        input(back)
+    if action == 3:
+        print("Afficher les rapports de joueurs \n ")
         display_players_report_menu()
-        input("> Appuyer sur une touche pour revenir en arrière")
+        input(back)
         display_player_menu()
     if action == 3:
         display_main_menu()
@@ -54,7 +61,7 @@ def display_tournament_menu():
         cr.round_check(tournoi)
         display_tournament_menu()
     if action == 4:
-        print("Afficher les rapports de tournoi")
+        print("Afficher les rapports de tournoi \n")
         display_tournaments_report_menu()
     if action == 5:
         display_main_menu()
@@ -66,12 +73,12 @@ def display_players_report_menu():
     if action == 1:
         print('Liste de tous les joueurs par ordre alphabétique : \n')
         crp.sorted_players_names()
-        input("> Appuyer sur une touche pour revenir en arrière")
+        input(back)
         display_players_report_menu()
     if action == 2:
         print('Liste de tous les acteurs par classement: \n')
         crp.sorted_players_rankings()
-        input("> Appuyer sur une touche pour revenir en arrière")
+        input(back)
         display_players_report_menu()
     if action == 3:
         display_main_menu()
@@ -82,7 +89,7 @@ def display_tournaments_report_menu():
     action = int(input("\n"))
     if action == 1:
         crp.show_all_tourneys()
-        input("> Appuyer sur une touche pour revenir en arrière")
+        input(back)
         display_tournaments_report_menu()
     if action == 2:
         display_tournaments_report_menu_2()
@@ -101,24 +108,24 @@ def display_tournaments_report_menu_2():
         if choice == 1:
             print(f"Classement des joueurs par odre alphabétique dans {tournoi}\n")
             crp.players_in_tn_by_names(tournoi)
-            input("> Appuyer sur une touche pour revenir en arrière \n")
+            input(back)
             display_tournaments_report_menu()
         if choice == 2:
             print(f"Classement des joueurs par classement dans {tournoi} ")
             crp.players_in_tn_by_rankings(tournoi)
-            input(" > Appuyer sur une touche pour revenir en arrière \n")
+            input(back)
             display_tournaments_report_menu()
         if choice == 3:
             display_tournaments_report_menu()
     if action == 2:
         print("Afficher les Manches")
         crp.show_all_rounds(tournoi)
-        input("> Appuyer sur une touche pour revenir en arrière \n")
+        input(back)
         display_tournaments_report_menu()
     if action == 3:
         print("Afficher les matchs")
         crp.show_all_matchs(tournoi)
-        input("> Appuyer sur une touche pour revenir en arrière \n")
+        input(back)
         display_tournaments_report_menu()
     if action == 4:
         display_tournament_menu()
