@@ -32,6 +32,7 @@ def display_player_menu():
         cp.update_ranking()
         print("Classement mis à jour \n ")
         input(back)
+        display_player_menu()
     if action == 3:
         print("Afficher les rapports de joueurs \n ")
         display_players_report_menu()
