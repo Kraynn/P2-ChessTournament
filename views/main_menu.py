@@ -13,7 +13,8 @@ class Menus:
                  ]
 
     player_menu = [("[1] Créer un joueur "),
-                   ("[2] Afficher les rapports "),
+                   ("[2] Mettre à jour le classment"),
+                   ("[3] Afficher les rapports "),
                    ("[3] Retour au menu précédant ")
                    ]
 
