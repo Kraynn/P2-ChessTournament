@@ -47,7 +47,7 @@ Excuter la commande suivante pour lancer le programme:
 >
 >python main.py
 
-Executer la commande suivantte pour générer le rapport:
+Executer la commande suivante pour générer le rapport:
 >
 > flake8 --filename=*.py --format=html --htmldir=flake-report --exclude chess_env\lib --ignore=E501
 
